@@ -1,19 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { InvestmentState, Investment, Fund } from '../types';
+import api from '../services/api';  // Import the configured api service
 
 // Thunk for fetching all investments
 export const fetchInvestments = createAsyncThunk(
   'investments/fetchInvestments',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/investments/');
-      if (!response.ok) {
-        throw new Error('Server Error');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return rejectWithValue((error as Error).message);
+      const response = await api.get('/investments/');
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch investments');
     }
   }
 );
@@ -23,14 +20,10 @@ export const fetchFunds = createAsyncThunk(
   'investments/fetchFunds',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/funds/');
-      if (!response.ok) {
-        throw new Error('Server Error');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return rejectWithValue((error as Error).message);
+      const response = await api.get('/funds/');
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch funds');
     }
   }
 );

@@ -58,6 +58,12 @@ This will start three services:
 - Django backend (accessible at http://localhost:8000)
 - React frontend (accessible at http://localhost:80)
 
+## First, run the database migrations:
+
+```bash
+docker-compose exec backend python manage.py makemigrations
+docker-compose exec backend python manage.py migrate
+```
 ## Loading Sample Data
 
 FundSight includes management commands to populate the database with sample data.
